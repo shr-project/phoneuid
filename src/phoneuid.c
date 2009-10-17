@@ -54,64 +54,6 @@ phoneuid_dbus_setup()
 {
 	guint result;
 	GError *error = NULL;
-	//DBusGConnection *connection;
-	//DBusGProxy *proxy;
-
-//	connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
-//	if (error) {
-//		g_error("%d: %s", error->code, error->message);
-//	}
-//	proxy = dbus_g_proxy_new_for_name(connection,
-//			DBUS_SERVICE_DBUS,
-//			DBUS_PATH_DBUS, DBUS_INTERFACE_DBUS);
-//
-//	/* -- request org.shr.phoneuid -- */
-//	g_debug("requesting name %s", PHONEUID_SERVICE);
-//	if (!org_freedesktop_DBus_request_name(proxy, PHONEUID_SERVICE,
-//				DBUS_NAME_FLAG_DO_NOT_QUEUE,
-//				&result, &error)) {
-//		g_error("Error requesting name: %d %s",
-//				error->code, error->message);
-//	}
-//	if (result != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
-//		g_error("Got result code %u from requesting %s", result,
-//				PHONEUID_SERVICE);
-//	}
-//
-//	/* -- register org.shr.phoneuid.CallManagement -- */
-//	g_debug("registering %s", PHONEUID_CALL_MANAGEMENT_PATH);
-//	dbus_register_object(connection, proxy,
-//			PHONEUID_TYPE_CALL_MANAGEMENT_SERVICE,
-//			&dbus_glib_phoneuid_call_management_service_object_info,
-//			PHONEUID_CALL_MANAGEMENT_PATH);
-//
-//	/* -- register org.shr.phoneuid.Dialer -- */
-//	g_debug("registering %s", PHONEUID_DIALER_PATH);
-//	dbus_register_object(connection, proxy,
-//			PHONEUID_TYPE_DIALER_SERVICE,
-//			&dbus_glib_phoneuid_dialer_service_object_info,
-//			PHONEUID_DIALER_PATH);
-//
-//	/* -- register org.shr.phoneuid.Dialogs -- */
-//	g_debug("registering %s", PHONEUID_DIALOGS_PATH);
-//	dbus_register_object(connection, proxy,
-//			PHONEUID_TYPE_DIALOGS_SERVICE,
-//			&dbus_glib_phoneuid_dialogs_service_object_info,
-//			PHONEUID_DIALOGS_PATH);
-//
-//	/* -- register org.shr.phoneuid.Contacts -- */
-//	g_debug("registering %s", PHONEUID_CONTACTS_PATH);
-//	dbus_register_object(connection, proxy,
-//			PHONEUID_TYPE_CONTACTS_SERVICE,
-//			&dbus_glib_phoneuid_contacts_service_object_info,
-//			PHONEUID_CONTACTS_PATH);
-//
-//	/* -- register org.shr.phoneuid.Messages -- */
-//	g_debug("registering %s", PHONEUID_MESSAGES_PATH);
-//	dbus_register_object(connection, proxy,
-//			PHONEUID_TYPE_MESSAGES_SERVICE,
-//			&dbus_glib_phoneuid_messages_service_object_info,
-//			PHONEUID_MESSAGES_PATH);
 
 	g_object_new(PHONEUID_TYPE_CALL_MANAGEMENT_SERVICE, NULL);
 	g_object_new(PHONEUID_TYPE_DIALER_SERVICE, NULL);
