@@ -1,7 +1,7 @@
 # get rid of that stupid cache mechanism
 rm -f config.cache
 
-AC_INIT(ophonekitd, 0.1, http://shr-project.org/)
+AC_INIT(phoneuid, 0.1, http://shr-project.org/)
 AC_PREREQ(2.52)
 AC_CONFIG_SRCDIR(configure.ac)
 AC_ISC_POSIX
@@ -11,10 +11,9 @@ AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
 AC_HEADER_STDC
 
-PKG_CHECK_MODULES(FRAMEWORKD_GLIB, libframeworkd-glib)
 PKG_CHECK_MODULES(DBUS_GLIB, dbus-glib-1)
 PKG_CHECK_MODULES(DBUS, dbus-1 glib-2.0 gthread-2.0)
-PKG_CHECK_MODULES(FRAMEWORKD_PHONEGUI, libframeworkd-phonegui)
+PKG_CHECK_MODULES(LIBPHONEUI, libphone-ui)
 
 AC_SUBST(DBUS_GLIB_CFLAGS)
 AC_SUBST(DBUS_GLIB_LIBS)

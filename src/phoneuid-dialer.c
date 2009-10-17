@@ -67,7 +67,7 @@ phoneuid_dialer_service_display(PhoneuidDialerService *object,
 		GHashTable *options, DBusGMethodInvocation *context)
 {
 	dbus_g_method_return(context);
-	phonegui_dialer_show();
+	phoneui_dialer_show();
 	return (TRUE);
 }
 

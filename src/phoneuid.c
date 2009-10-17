@@ -10,7 +10,7 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-#include <frameworkd-phonegui/frameworkd-phonegui.h>
+#include <phoneui/phoneui.h>
 #include "phoneuid-call-management.h"
 #include "phoneuid-dialer.h"
 #include "phoneuid-dialogs.h"
@@ -166,11 +166,11 @@ main(int argc, char **argv)
 		g_thread_init(NULL);
 	dbus_g_thread_init();
 
-	phonegui_load("phoneuid");
-	phonegui_init(argc, argv, NULL);
+	phoneui_load("phoneuid");
+	phoneui_init(argc, argv, NULL);
 	phoneuid_dbus_setup();
-	phonegui_loop();
-	g_debug("exited from phonegui_loop!");
+	phoneui_loop();
+	g_debug("exited from phoneui_loop!");
 }
 
 

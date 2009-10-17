@@ -44,15 +44,13 @@ phoneuid_CFLAGS = \
 		  -DPKGDATADIR=\"$(pkgdatadir)\" \
 		  @DBUS_GLIB_CFLAGS@ \
 		  @DBUS_CFLAGS@ \
-		  @FRAMEWORKD_GLIB_CFLAGS@ \
-		  @FRAMEWORKD_PHONEGUI_CFLAGS@ \
+		  @LIBPHONEUI_CFLAGS@ \
 		  -ggdb
 
 phoneuid_LDFLAGS = \
 		   -ldl \
 		   @DBUS_GLIB_LIBS@ \
 		   @DBUS_LIBS@ \
-		   @FRAMEWORKD_GLIB_LIBS@ \
-		   @FRAMEWORKD_PHONEGUI_LIBS@
+		   @LIBPHONEUI_LIBS@
 
 

@@ -70,7 +70,7 @@ phoneuid_contacts_service_display_list(PhoneuidContactsService *object,
 		GError **error)
 {
 	g_debug("org.shr.phoneuid.Contacts.DisplayList");
-	phonegui_contacts_show();
+	phoneui_contacts_show();
 	return (TRUE);
 }
 

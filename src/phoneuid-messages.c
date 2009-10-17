@@ -67,7 +67,7 @@ phoneuid_messages_service_display_list(PhoneuidMessagesService *object,
 {
 	g_debug("org.shr.phoneuid.Messages.DisplayList");
 	dbus_g_method_return(context);
-	phonegui_messages_show();
+	phoneui_messages_show();
 	return (TRUE);
 }
 

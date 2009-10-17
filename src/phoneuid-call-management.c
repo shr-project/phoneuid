@@ -67,7 +67,7 @@ phoneuid_call_management_service_display_incoming(
 		const int status, const char *number, GError **error)
 {
 	g_debug("org.shr.phoneuid.CallManagement.DisplayIncoming");
-	phonegui_incoming_call_show(call_id, status, number);
+	phoneui_incoming_call_show(call_id, status, number);
 	return (TRUE);
 }
 
@@ -77,7 +77,7 @@ phoneuid_call_management_service_hide_incoming(
 		GError **error)
 {
 	g_debug("org.shr.phoneuid.CallManagement.HideIncoming");
-	phonegui_incoming_call_hide(call_id);
+	phoneui_incoming_call_hide(call_id);
 	return (TRUE);
 }
 
@@ -88,7 +88,7 @@ phoneuid_call_management_service_display_outgoing(
 		const int status, const char *number, GError **error)
 {
 	g_debug("org.shr.phoneuid.CallManagement.DisplayOutgoing");
-	phonegui_outgoing_call_show(call_id, status, number);
+	phoneui_outgoing_call_show(call_id, status, number);
 	return (TRUE);
 }
 
@@ -98,6 +98,6 @@ phoneuid_call_management_service_hide_outgoing(
 		GError **error)
 {
 	g_debug("org.shr.phoneuid.CallManagement.HideOutgoing");
-	phonegui_outgoing_call_hide(call_id);
+	phoneui_outgoing_call_hide(call_id);
 	return (TRUE);
 }
