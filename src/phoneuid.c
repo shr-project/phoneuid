@@ -13,7 +13,7 @@
 #include <phoneui/phoneui.h>
 #include "phoneuid-call-management.h"
 #include "phoneuid-dialer.h"
-#include "phoneuid-dialogs.h"
+#include "phoneuid-notification.h"
 #include "phoneuid-contacts.h"
 #include "phoneuid-messages.h"
 #include "phoneuid-dbus-common.h"
@@ -59,7 +59,7 @@ phoneuid_dbus_setup()
 	g_object_new(PHONEUID_TYPE_DIALER_SERVICE, NULL);
 	g_object_new(PHONEUID_TYPE_CONTACTS_SERVICE, NULL);
 	g_object_new(PHONEUID_TYPE_MESSAGES_SERVICE, NULL);
-	g_object_new(PHONEUID_TYPE_DIALOGS_SERVICE, NULL);
+	g_object_new(PHONEUID_TYPE_NOTIFICATION_SERVICE, NULL);
 
 	/* -- register with ophonekitd as UI handler -- */
 	g_debug("registering with ophonekitd as UI handler");
