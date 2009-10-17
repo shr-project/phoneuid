@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.shr.phoneuid.Messages
+Exec=/usr/bin/phoneuid
