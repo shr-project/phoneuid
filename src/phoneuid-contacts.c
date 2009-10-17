@@ -75,7 +75,7 @@ phoneuid_contacts_service_display_list(PhoneuidContactsService *object,
 }
 
 gboolean
-phoneuid_contacts_service_display_item(PhoneuidContactsService *object,
+phoneuid_contacts_service_display_contact(PhoneuidContactsService *object,
 		const char *contact_path, GError **error)
 {
 	g_debug("org.shr.phoneuid.Contacts.DisplayItem");

@@ -27,7 +27,7 @@ gboolean
 phoneuid_contacts_service_display_list(PhoneuidContactsService *object,
 		GError **error);
 gboolean
-phoneuid_contacts_service_display_item(PhoneuidContactsService *object,
+phoneuid_contacts_service_display_contact(PhoneuidContactsService *object,
 		const char *contact_path, GError **error);
 gboolean
 phoneuid_contacts_service_create_contact(PhoneuidContactsService *object,
