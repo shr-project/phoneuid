@@ -14,7 +14,7 @@ phoneuid_notification_service_class_init(PhoneuidNotificationServiceClass *klass
 	GError *error = NULL;
 
 	/* Init the DBus connection, per-klass */
-	klass->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+	klass->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
 	if (klass->connection == NULL) {
 		g_warning("Unable to connect to dbus: %s", error->message);
 		g_error_free (error);
@@ -63,25 +63,38 @@ phoneuid_notification_service_new(void)
 
 gboolean
 phoneuid_notification_service_display_sim_auth(PhoneuidNotificationService *object,
-		GError **error)
+		const int status, DBusGMethodInvocation *context)
 {
+	dbus_g_method_return(context);
+	phoneui_sim_auth_show(status);
+	return (TRUE);
 }
 
 gboolean
 phoneuid_notification_service_hide_sim_auth(PhoneuidNotificationService *object,
-		GError **error)
+		const int status, DBusGMethodInvocation *context)
 {
+	dbus_g_method_return(context);
+	phoneui_sim_auth_hide(status);
+	return (TRUE);
 }
 
 gboolean
 phoneuid_notification_service_display_ussd(PhoneuidNotificationService *object,
-		const int mode, const char *message, GError **error)
+		const int mode, const char *message, DBusGMethodInvocation *context)
 {
+	dbus_g_method_return(context);
+	phoneui_ussd_show(mode, message);
+	return (TRUE);
+
 }
 
 gboolean
 phoneuid_notification_service_display_dialog(PhoneuidNotificationService *object,
-		const int dialog, GError **error)
+		const int dialog, DBusGMethodInvocation *context)
 {
+	dbus_g_method_return(context);
+	phoneui_dialog_show(dialog);
+	return (TRUE);
 }
 

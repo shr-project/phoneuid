@@ -14,7 +14,7 @@ phoneuid_messages_service_class_init(PhoneuidMessagesServiceClass *klass)
 	GError *error = NULL;
 
 	/* Init the DBus connection, per-klass */
-	klass->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+	klass->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
 	if (klass->connection == NULL) {
 		g_warning("Unable to connect to dbus: %s", error->message);
 		g_error_free (error);
@@ -65,25 +65,27 @@ gboolean
 phoneuid_messages_service_display_list(PhoneuidMessagesService *object,
 		GHashTable *options, DBusGMethodInvocation *context)
 {
-	g_debug("org.shr.phoneuid.Messages.DisplayList");
+	g_debug("org.shr.phoneui.Messages.DisplayList");
 	dbus_g_method_return(context);
 	phoneui_messages_show();
 	return (TRUE);
 }
 
 gboolean
-phoneuid_messages_service_display_item(PhoneuidMessagesService *object,
-		const char *message_path, GError **error)
+phoneuid_messages_service_display_message(PhoneuidMessagesService *object,
+		const char *message_path, DBusGMethodInvocation *context)
 {
-	g_debug("org.shr.phoneuid.Contacts.DisplayItem");
+	g_debug("org.shr.phoneui.Messages.DisplayMessage");
+	dbus_g_method_return(context);
 	return (TRUE);
 }
 
 gboolean
 phoneuid_messages_service_create_message(PhoneuidMessagesService *object,
-		GHashTable *values, GError **error)
+		GHashTable *values, DBusGMethodInvocation *context)
 {
-	g_debug("org.shr.phoneuid.Contacts.CreateContact");
+	g_debug("org.shr.phoneui.Messages.CreateContact");
+	dbus_g_method_return(context);
 	return (TRUE);
 }
 

@@ -15,7 +15,7 @@ phoneuid_call_management_service_class_init(PhoneuidCallManagementServiceClass *
 	GError *error = NULL;
 
 	/* Init the DBus connection, per-klass */
-	klass->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+	klass->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
 	if (klass->connection == NULL) {
 		g_warning("Unable to connect to dbus: %s", error->message);
 		g_error_free (error);
@@ -64,9 +64,11 @@ phoneuid_call_management_service_new(void)
 gboolean
 phoneuid_call_management_service_display_incoming(
 		PhoneuidCallManagementService *object, const int call_id,
-		const int status, const char *number, GError **error)
+		const int status, const char *number,
+		DBusGMethodInvocation *context)
 {
 	g_debug("org.shr.phoneuid.CallManagement.DisplayIncoming");
+	dbus_g_method_return(context);
 	phoneui_incoming_call_show(call_id, status, number);
 	return (TRUE);
 }
@@ -74,9 +76,10 @@ phoneuid_call_management_service_display_incoming(
 gboolean
 phoneuid_call_management_service_hide_incoming(
 		PhoneuidCallManagementService *object, const gint call_id,
-		GError **error)
+		DBusGMethodInvocation *context)
 {
 	g_debug("org.shr.phoneuid.CallManagement.HideIncoming");
+	dbus_g_method_return(context);
 	phoneui_incoming_call_hide(call_id);
 	return (TRUE);
 }
@@ -85,9 +88,11 @@ phoneuid_call_management_service_hide_incoming(
 gboolean
 phoneuid_call_management_service_display_outgoing(
 		PhoneuidCallManagementService *object, const int call_id,
-		const int status, const char *number, GError **error)
+		const int status, const char *number,
+		DBusGMethodInvocation *context)
 {
 	g_debug("org.shr.phoneuid.CallManagement.DisplayOutgoing");
+	dbus_g_method_return(context);
 	phoneui_outgoing_call_show(call_id, status, number);
 	return (TRUE);
 }
@@ -95,9 +100,12 @@ phoneuid_call_management_service_display_outgoing(
 gboolean
 phoneuid_call_management_service_hide_outgoing(
 		PhoneuidCallManagementService *object, const int call_id,
-		GError **error)
+		DBusGMethodInvocation *context)
 {
 	g_debug("org.shr.phoneuid.CallManagement.HideOutgoing");
+	dbus_g_method_return(context);
 	phoneui_outgoing_call_hide(call_id);
 	return (TRUE);
 }
+
+

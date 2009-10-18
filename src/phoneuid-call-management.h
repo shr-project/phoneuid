@@ -25,21 +25,23 @@ struct _PhoneuidCallManagementServiceClass {
 gboolean
 phoneuid_call_management_service_display_incoming(
 		PhoneuidCallManagementService *object, const int call_id,
-		const int status, const char *number, GError **error);
+		const int status, const char *number,
+		DBusGMethodInvocation *context);
 gboolean
 phoneuid_call_management_service_hide_incoming(
 		PhoneuidCallManagementService *object, const int call_id,
-		GError **error);
+		DBusGMethodInvocation *context);
 
 gboolean
 phoneuid_call_management_service_display_outgoing(
 		PhoneuidCallManagementService *object, const int call_id,
-		const int status, const char *number, GError **error);
+		const int status, const char *number,
+		DBusGMethodInvocation *context);
 
 gboolean
 phoneuid_call_management_service_hide_outgoing(
 		PhoneuidCallManagementService *object, const int call_id,
-		GError **error);
+		DBusGMethodInvocation *context);
 
 
 PhoneuidCallManagementService *phoneuid_call_management_service_new(void);

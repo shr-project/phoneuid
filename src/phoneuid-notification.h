@@ -25,16 +25,17 @@ struct _PhoneuidNotificationServiceClass {
 
 gboolean
 phoneuid_notification_service_display_sim_auth(PhoneuidNotificationService *object,
-		GError **error);
+		const int status, DBusGMethodInvocation *context);
 gboolean
 phoneuid_notification_service_hide_sim_auth(PhoneuidNotificationService *object,
-		GError **error);
+		const int status, DBusGMethodInvocation *context);
 gboolean
 phoneuid_notification_service_display_ussd(PhoneuidNotificationService *object,
-		const int mode, const char *message, GError **error);
+		const int mode, const char *message,
+		DBusGMethodInvocation *context);
 gboolean
 phoneuid_notification_service_display_dialog(PhoneuidNotificationService *object,
-		const int dialog, GError **error);
+		const int dialog, DBusGMethodInvocation *context);
 
 
 PhoneuidNotificationService *phoneuid_notification_service_new(void);

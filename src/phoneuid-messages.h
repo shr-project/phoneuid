@@ -27,11 +27,11 @@ gboolean
 phoneuid_messages_service_display_list(PhoneuidMessagesService *object,
 		GHashTable *options, DBusGMethodInvocation *context);
 gboolean
-phoneuid_messages_service_display_item(PhoneuidMessagesService *object,
-		const char *message_path, GError **error);
+phoneuid_messages_service_display_message(PhoneuidMessagesService *object,
+		const char *message_path, DBusGMethodInvocation *context);
 gboolean
 phoneuid_messages_service_create_message(PhoneuidMessagesService *object,
-		GHashTable *values, GError **error);
+		GHashTable *values, DBusGMethodInvocation *context);
 
 
 PhoneuidMessagesService *phoneuid_messages_service_new(void);

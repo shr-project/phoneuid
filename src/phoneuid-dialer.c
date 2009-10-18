@@ -14,7 +14,7 @@ phoneuid_dialer_service_class_init(PhoneuidDialerServiceClass *klass)
 	GError *error = NULL;
 
 	/* Init the DBus connection, per-klass */
-	klass->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+	klass->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
 	if (klass->connection == NULL) {
 		g_warning("Unable to connect to dbus: %s", error->message);
 		g_error_free (error);

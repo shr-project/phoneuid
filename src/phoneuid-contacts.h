@@ -25,16 +25,16 @@ struct _PhoneuidContactsServiceClass {
 
 gboolean
 phoneuid_contacts_service_display_list(PhoneuidContactsService *object,
-		GError **error);
+		GHashTable *filter, DBusGMethodInvocation *context);
 gboolean
 phoneuid_contacts_service_display_contact(PhoneuidContactsService *object,
-		const char *contact_path, GError **error);
+		const char *contact_path, DBusGMethodInvocation *context);
 gboolean
 phoneuid_contacts_service_create_contact(PhoneuidContactsService *object,
-		GHashTable *values, GError **error);
+		GHashTable *values, DBusGMethodInvocation *context);
 gboolean
 phoneuid_contacts_service_edit_contact(PhoneuidContactsService *object,
-		const char *contact_path, GError **error);
+		const char *contact_path, DBusGMethodInvocation *context);
 
 
 

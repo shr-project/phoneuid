@@ -55,11 +55,11 @@ phoneuid_dbus_setup()
 	guint result;
 	GError *error = NULL;
 
-	g_object_new(PHONEUID_TYPE_CALL_MANAGEMENT_SERVICE, NULL);
-	g_object_new(PHONEUID_TYPE_DIALER_SERVICE, NULL);
-	g_object_new(PHONEUID_TYPE_CONTACTS_SERVICE, NULL);
-	g_object_new(PHONEUID_TYPE_MESSAGES_SERVICE, NULL);
-	g_object_new(PHONEUID_TYPE_NOTIFICATION_SERVICE, NULL);
+	phoneuid_call_management_service_new();
+	phoneuid_dialer_service_new();
+	phoneuid_notification_service_new();
+	phoneuid_contacts_service_new();
+	phoneuid_messages_service_new();
 
 	/* -- register with phonefsod as UI handler -- */
 	g_debug("registering with phonefsod as UI handler");
