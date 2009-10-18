@@ -81,22 +81,8 @@ phoneuid_dbus_setup()
 int
 main(int argc, char **argv)
 {
-	if (argc == 1) {
-		/* --- daemonize --- */
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
-		umask(0077);
 
-		if (fork())
-			return (0);
-
-		chdir("/");
-		setsid();
-		setpgrp();
-	}
-
-	logfile = open("/tmp/phoneuid.log", O_WRONLY | O_CREAT | O_APPEND);
+	logfile = open("/var/log/phoneuid.log", O_WRONLY | O_CREAT | O_APPEND);
 	if (logfile == -1) {
 		printf("Error creating the logfile!!!");
 		return (-3);
