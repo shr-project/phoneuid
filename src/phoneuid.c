@@ -61,11 +61,11 @@ phoneuid_dbus_setup()
 	g_object_new(PHONEUID_TYPE_MESSAGES_SERVICE, NULL);
 	g_object_new(PHONEUID_TYPE_NOTIFICATION_SERVICE, NULL);
 
-	/* -- register with ophonekitd as UI handler -- */
-	g_debug("registering with ophonekitd as UI handler");
+	/* -- register with phonefsod as UI handler -- */
+	g_debug("registering with phonefsod as UI handler");
 	DBusGConnection *bus = dbus_g_bus_get(DBUS_BUS_SYSTEM, &error);
-	DBusGProxy *proxy = dbus_g_proxy_new_for_name(bus, "org.shr.ophonekitd.Usage",
-			"/org/shr/ophonekitd/Usage", "org.shr.ophonekitd.Usage");
+	DBusGProxy *proxy = dbus_g_proxy_new_for_name(bus, PHONEFSOD_USAGE_NAME,
+			PHONEFSOD_USAGE_PATH, PHONEFSOD_USAGE_INTERFACE);
 	if (error == NULL) {
 		dbus_g_proxy_call(proxy, "RegisterUiHandler", &error,
 				G_TYPE_STRING, getenv("DBUS_SESSION_BUS_ADDRESS"),
