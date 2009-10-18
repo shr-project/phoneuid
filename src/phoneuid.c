@@ -18,23 +18,21 @@
 #include "phoneuid-messages.h"
 #include "phoneuid-dbus-common.h"
 
-static int logfile = -1;
+static FILE *logfile = NULL;
 
 static void
 _log_handler(const gchar *domain, GLogLevelFlags level, const gchar *message,
 		gpointer userdata)
 {
+	char date_str[30];
 	struct timeval tv;
 	struct tm ptime;
 	gettimeofday(&tv, NULL);
         localtime_r(&tv.tv_sec, &ptime);
 
-	char *msg = g_strdup_printf("%04d.%02d.%02d %02d:%02d:%02d.%06d %s\n",
-			ptime.tm_year+1900, ptime.tm_mon, ptime.tm_mday,
-			ptime.tm_hour, ptime.tm_min, ptime.tm_sec, tv.tv_usec,
-			message);
-	write(logfile, msg, strlen(msg));
-	free(msg);
+        strftime(date_str, 30, "%D %T", &ptime);
+
+	fprintf(logfile, "[%s] %s - %s\n", "phoneui", date_str, message);
 }
 
 static gpointer
@@ -82,8 +80,8 @@ int
 main(int argc, char **argv)
 {
 
-	logfile = open("/var/log/phoneuid.log", O_WRONLY | O_CREAT | O_APPEND);
-	if (logfile == -1) {
+	logfile = fopen("/var/log/phoneuid.log", "a");
+	if (!logfile) {
 		printf("Error creating the logfile!!!");
 		return (-3);
 	}
