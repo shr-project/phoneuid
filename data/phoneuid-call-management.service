@@ -1,3 +1,4 @@
 [D-BUS Service]
 Name=org.shr.phoneui.CallManagement
 Exec=/usr/bin/phoneuid
+User=root

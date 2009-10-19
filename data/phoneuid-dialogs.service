@@ -1,3 +1,4 @@
 [D-BUS Service]
 Name=org.shr.phoneui.Notification
 Exec=/usr/bin/phoneuid
+User=root
