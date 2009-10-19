@@ -42,6 +42,7 @@ phoneuid_SOURCES = $(dbus_sources) \
 phoneuid_CFLAGS = \
 		  -DDATADIR=\"$(datadir)\" \
 		  -DPKGDATADIR=\"$(pkgdatadir)\" \
+		  -DG_LOG_DOMAIN=\"phoneuid\" \
 		  @DBUS_GLIB_CFLAGS@ \
 		  @DBUS_CFLAGS@ \
 		  @LIBPHONEUI_CFLAGS@ \
