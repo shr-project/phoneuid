@@ -79,8 +79,9 @@ gboolean
 phoneuid_contacts_service_display_contact(PhoneuidContactsService *object,
 		const char *contact_path, DBusGMethodInvocation *context)
 {
-	g_debug("org.shr.phoneuid.Contacts.DisplayItem");
+	g_debug("org.shr.phoneuid.Contacts.DisplayContact");
 	dbus_g_method_return(context);
+	phoneui_contacts_contact_show(contact_path);
 	return (TRUE);
 }
 
@@ -90,6 +91,7 @@ phoneuid_contacts_service_create_contact(PhoneuidContactsService *object,
 {
 	g_debug("org.shr.phoneuid.Contacts.CreateContact");
 	dbus_g_method_return(context);
+	phoneui_contacts_contact_new(values);
 	return (TRUE);
 }
 
@@ -99,6 +101,7 @@ phoneuid_contacts_service_edit_contact(PhoneuidContactsService *object,
 {
 	g_debug("org.shr.phoneuid.Contacts.EditContact");
 	dbus_g_method_return(context);
+	phoneui_contacts_contact_edit(contact_path);
 	return (TRUE);
 }
 
