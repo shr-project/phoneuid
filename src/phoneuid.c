@@ -111,7 +111,7 @@ _load_config()
 	
 	logfile = fopen(logpath, "a");
 	if (!logfile) {
-		printf("Error creating the logfile (%s) !!!", LOGFILE);
+		printf("Error creating the logfile (%s) !!!", logfile);
 		g_log_set_default_handler(g_log_default_handler, NULL);
 	}
 	
