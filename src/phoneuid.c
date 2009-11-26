@@ -112,7 +112,7 @@ _load_config()
 	logfile = fopen(logpath, "a");
 	if (!logfile) {
 		printf("Error creating the logfile (%s) !!!", LOGFILE);
-		return (-3);
+		g_log_set_default_handler(g_log_default_handler, NULL);
 	}
 	
 	log_flags = G_LOG_FLAG_FATAL;
