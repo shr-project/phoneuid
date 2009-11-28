@@ -21,7 +21,7 @@
 
 static FILE *logfile = NULL;
 /*FIXME: hardcoded, shoudl change */
-#define CONF_FILE "/etc/phoneui.conf"
+#define CONF_FILE "/etc/phoneuid.conf"
 #define LOGFILE "/var/log/phoneuid.log"
 #define DEFAULT_DEBUG_LEVEL "INFO"
 static GLogLevelFlags log_flags;
