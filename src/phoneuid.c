@@ -178,6 +178,8 @@ phoneuid_dbus_setup()
 	phoneuid_notification_service_new();
 	phoneuid_contacts_service_new();
 	phoneuid_messages_service_new();
+	phoneuid_settings_service_new();
+	phoneuid_idle_screen_service_new();
 
 	/* -- register with phonefsod as UI handler -- */
 	g_debug("registering with phonefsod as UI handler");

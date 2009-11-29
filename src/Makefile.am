@@ -15,13 +15,21 @@ phoneuid-dialer-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.Dialer.xml
 phoneuid-notification-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.Notification.xml
 	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_notification_service $^
 
+phoneuid-settings-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.Settings.xml
+	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_settings_service $^
+
+phoneuid-idle-screen-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.IdleScreen.xml
+	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_idle_screen_service $^
+
 
 bin_PROGRAMS = phoneuid
 dbus_sources = phoneuid-contacts-service-glue.h \
 	       phoneuid-messages-service-glue.h \
 	       phoneuid-call-management-service-glue.h \
 	       phoneuid-dialer-service-glue.h \
-	       phoneuid-notification-service-glue.h
+	       phoneuid-notification-service-glue.h \
+	       phoneuid-settings-service-glue.h \
+	       phoneuid-idle-screen-service-glue.h
 
 
 BUILT_SOURCES = $(dbus_sources)
@@ -37,7 +45,11 @@ phoneuid_SOURCES = $(dbus_sources) \
 	phoneuid-notification.c \
 	phoneuid-notification.h \
 	phoneuid-dialer.c \
-	phoneuid-dialer.h
+	phoneuid-dialer.h \
+	phoneuid-settings.c \
+	phoneuid-settings.h \
+	phoneuid-idle-screen.c \
+	phoneuid-idle-screen.h
 
 phoneuid_CFLAGS = \
 		  -DDATADIR=\"$(datadir)\" \

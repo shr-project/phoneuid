@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.shr.phoneui.IdleScreen
+Exec=/usr/bin/phoneuid
+User=root

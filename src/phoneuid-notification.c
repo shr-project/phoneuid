@@ -98,3 +98,11 @@ phoneuid_notification_service_display_dialog(PhoneuidNotificationService *object
 	return (TRUE);
 }
 
+gboolean
+phoneuid_notification_service_feedback_action(PhoneuidNotificationService *object,
+		const char *action, const char *level, DBusGMethodInvocation *context)
+{
+	dbus_g_method_return(context);
+	return (TRUE);
+}
+
