@@ -38,7 +38,7 @@ phoneuid_notification_service_display_dialog(PhoneuidNotificationService *object
 		const int dialog, DBusGMethodInvocation *context);
 gboolean
 phoneuid_notification_service_feedback_action(PhoneuidNotificationService *object,
-		const char *action, const char *level, DBusGMethodInvocation *context)
+		const char *action, const char *level, DBusGMethodInvocation *context);
 
 
 PhoneuidNotificationService *phoneuid_notification_service_new(void);
