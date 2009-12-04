@@ -25,7 +25,7 @@ struct _PhoneuidSettingsServiceClass {
 
 gboolean
 phoneuid_settings_service_display_quick_settings(PhoneuidSettingsService *object,
-		const int status, DBusGMethodInvocation *context);
+		DBusGMethodInvocation *context);
 
 
 PhoneuidSettingsService *phoneuid_settings_service_new(void);

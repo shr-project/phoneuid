@@ -63,7 +63,7 @@ phoneuid_settings_service_new(void)
 
 gboolean
 phoneuid_settings_service_display_quick_settings(PhoneuidSettingsService *object,
-		const int status, DBusGMethodInvocation *context)
+		DBusGMethodInvocation *context)
 {
 	dbus_g_method_return(context);
 	phoneui_quick_settings_show();
