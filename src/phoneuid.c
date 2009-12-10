@@ -170,9 +170,6 @@ dbus_register_object(DBusGConnection * connection,
 static void
 phoneuid_dbus_setup()
 {
-	guint result;
-	GError *error = NULL;
-
 	phoneuid_call_management_service_new();
 	phoneuid_dialer_service_new();
 	phoneuid_notification_service_new();
@@ -180,21 +177,6 @@ phoneuid_dbus_setup()
 	phoneuid_messages_service_new();
 	phoneuid_settings_service_new();
 	phoneuid_idle_screen_service_new();
-
-	/* -- register with phonefsod as UI handler -- */
-	g_debug("registering with phonefsod as UI handler");
-	DBusGConnection *bus = dbus_g_bus_get(DBUS_BUS_SYSTEM, &error);
-	DBusGProxy *proxy = dbus_g_proxy_new_for_name(bus, PHONEFSOD_USAGE_NAME,
-			PHONEFSOD_USAGE_PATH, PHONEFSOD_USAGE_INTERFACE);
-	if (error == NULL) {
-		dbus_g_proxy_call(proxy, "RegisterUiHandler", &error,
-				G_TYPE_STRING, getenv("DBUS_SESSION_BUS_ADDRESS"),
-				G_TYPE_INVALID, G_TYPE_INVALID);
-	}
-	else {
-		g_message("(%d) %s", error->code, error->message);
-		g_error_free(error);
-	}
 }
 
 
