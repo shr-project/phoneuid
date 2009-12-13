@@ -30,6 +30,13 @@ gboolean
 phoneuid_idle_screen_service_hide(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context);
 
+gboolean
+phoneuid_idle_screen_service_activate_screensaver(PhoneuidIdleScreenService *object,
+		DBusGMethodInvocation *context);
+
+gboolean
+phoneuid_idle_screen_service_deactivate_screensaver(PhoneuidIdleScreenService *object,
+		DBusGMethodInvocation *context);
 
 PhoneuidIdleScreenService *phoneuid_idle_screen_service_new(void);
 

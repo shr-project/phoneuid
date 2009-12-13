@@ -3,6 +3,7 @@
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <phoneui/phoneui.h>
+#include <phoneui/phoneui-utils-device.h>
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-idle-screen.h"
 #include "phoneuid-idle-screen-service-glue.h"
@@ -78,6 +79,25 @@ phoneuid_idle_screen_service_hide(PhoneuidIdleScreenService *object,
 {
 	dbus_g_method_return(context);
 	phoneui_idle_screen_hide();
+	return (TRUE);
+}
+
+
+gboolean
+phoneuid_idle_screen_service_activate_screensaver(PhoneuidIdleScreenService *object,
+		DBusGMethodInvocation *context)
+{
+	dbus_g_method_return(context);
+	phoneui_utils_device_activate_screensaver();
+	return (TRUE);
+}
+
+gboolean
+phoneuid_idle_screen_service_deactivate_screensaver(PhoneuidIdleScreenService *object,
+		DBusGMethodInvocation *context)
+{
+	dbus_g_method_return(context);
+	phoneui_utils_device_deactivate_screensaver();
 	return (TRUE);
 }
 
