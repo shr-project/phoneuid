@@ -84,6 +84,16 @@ phoneuid_idle_screen_service_hide(PhoneuidIdleScreenService *object,
 
 
 gboolean
+phoneuid_idle_screen_service_toggle(PhoneuidIdleScreenService *object,
+		DBusGMethodInvocation *context)
+{
+	dbus_g_method_return(context);
+	phoneui_idle_screen_toggle();
+	return (TRUE);
+}
+
+
+gboolean
 phoneuid_idle_screen_service_activate_screensaver(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context)
 {
