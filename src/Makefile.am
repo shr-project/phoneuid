@@ -51,7 +51,7 @@ phoneuid_SOURCES = $(dbus_sources) \
 	phoneuid-idle-screen.c \
 	phoneuid-idle-screen.h
 
-phoneuid_CFLAGS = \
+phoneuid_CFLAGS = -Wall -Wextra -Werror \
 		  -DDATADIR=\"$(datadir)\" \
 		  -DPKGDATADIR=\"$(pkgdatadir)\" \
 		  -DG_LOG_DOMAIN=\"phoneuid\" \

@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-messages.h"
 #include "phoneuid-messages-service-glue.h"
@@ -32,7 +34,7 @@ phoneuid_messages_service_init(PhoneuidMessagesService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidMessagesServiceClass *klass = 
 		PHONEUID_MESSAGES_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -65,6 +67,8 @@ gboolean
 phoneuid_messages_service_display_list(PhoneuidMessagesService *object,
 		GHashTable *options, DBusGMethodInvocation *context)
 {
+	(void) object;
+	(void) options;
 	g_debug("org.shr.phoneui.Messages.DisplayList");
 	dbus_g_method_return(context);
 	phoneui_messages_show();
@@ -75,6 +79,8 @@ gboolean
 phoneuid_messages_service_display_message(PhoneuidMessagesService *object,
 		const char *message_path, DBusGMethodInvocation *context)
 {
+	(void) object;
+	(void) message_path;
 	g_debug("org.shr.phoneui.Messages.DisplayMessage");
 	dbus_g_method_return(context);
 	return (TRUE);
@@ -84,6 +90,8 @@ gboolean
 phoneuid_messages_service_create_message(PhoneuidMessagesService *object,
 		GHashTable *values, DBusGMethodInvocation *context)
 {
+	(void) object;
+	(void) values;
 	g_debug("org.shr.phoneui.Messages.CreateContact");
 	dbus_g_method_return(context);
 	return (TRUE);

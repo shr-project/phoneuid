@@ -10,14 +10,18 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-#include <phoneui/phoneui.h>
 #include <time.h>
+#include <sys/time.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-call-management.h"
 #include "phoneuid-dialer.h"
 #include "phoneuid-notification.h"
 #include "phoneuid-contacts.h"
 #include "phoneuid-messages.h"
 #include "phoneuid-dbus-common.h"
+#include "phoneuid-settings.h"
+#include "phoneuid-idle-screen.h"
 
 static FILE *logfile = NULL;
 /*FIXME: hardcoded, shoudl change */
@@ -34,6 +38,7 @@ _log_handler(const gchar *domain, GLogLevelFlags level, const gchar *message,
 	struct timeval tv;
 	struct tm ptime;
 	char *levelstr;
+	(void) userdata;
 	if (!(log_flags & G_LOG_LEVEL_MASK & level)) {
 		return;
 	}
@@ -66,19 +71,11 @@ _log_handler(const gchar *domain, GLogLevelFlags level, const gchar *message,
 		break;
 	}
 
-	fprintf(logfile, "%s.%06d [%s]\t%s: %s\n", date_str, tv.tv_usec,
+	fprintf(logfile, "%s.%06d [%s]\t%s: %s\n", date_str, (int) tv.tv_usec,
 			domain, levelstr, message);
 	fflush(logfile);
 }
-static void
-_empty_log_handler(const gchar *domain, GLogLevelFlags level, const gchar *message,
-		gpointer userdata)
-{
-	(void) domain;
-	(void) level;
-	(void) message;
-	(void) userdata;
-}
+
 static void
 _load_config()
 {
@@ -111,7 +108,7 @@ _load_config()
 	
 	logfile = fopen(logpath, "a");
 	if (!logfile) {
-		printf("Error creating the logfile (%s) !!!", logfile);
+		printf("Error creating the logfile (%s) !!!", logpath);
 		g_log_set_default_handler(g_log_default_handler, NULL);
 	}
 	
@@ -155,17 +152,21 @@ _load_config()
 	}
 }
 
+/* not used atm */
+#if 0
 static gpointer
 dbus_register_object(DBusGConnection * connection,
 		     DBusGProxy * proxy,
 		     GType object_type,
 		     const DBusGObjectInfo * info, const gchar * path)
 {
+	(void) proxy;
 	GObject *object = g_object_new(object_type, NULL);
 	dbus_g_object_type_install_info(object_type, info);
 	dbus_g_connection_register_g_object(connection, path, object);
 	return object;
 }
+#endif
 
 static void
 phoneuid_dbus_setup()
@@ -197,6 +198,8 @@ main(int argc, char **argv)
 	phoneuid_dbus_setup();
 	phoneui_loop();
 	g_debug("exited from phoneui_loop!");
+	
+	return 0;
 }
 
 

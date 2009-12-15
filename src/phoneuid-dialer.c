@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-dialer.h"
 #include "phoneuid-dialer-service-glue.h"
@@ -32,7 +34,7 @@ phoneuid_dialer_service_init(PhoneuidDialerService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidDialerServiceClass *klass =
 		PHONEUID_DIALER_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -66,6 +68,8 @@ gboolean
 phoneuid_dialer_service_display(PhoneuidDialerService *object,
 		GHashTable *options, DBusGMethodInvocation *context)
 {
+	(void) object;
+	(void) options;
 	dbus_g_method_return(context);
 	phoneui_dialer_show();
 	return (TRUE);

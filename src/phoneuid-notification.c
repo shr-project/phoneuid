@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-notification.h"
 #include "phoneuid-notification-service-glue.h"
@@ -32,7 +34,7 @@ phoneuid_notification_service_init(PhoneuidNotificationService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidNotificationServiceClass *klass =
 		PHONEUID_NOTIFICATION_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -65,6 +67,7 @@ gboolean
 phoneuid_notification_service_display_sim_auth(PhoneuidNotificationService *object,
 		const int status, DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_sim_auth_show(status);
 	return (TRUE);
@@ -74,6 +77,7 @@ gboolean
 phoneuid_notification_service_hide_sim_auth(PhoneuidNotificationService *object,
 		const int status, DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_sim_auth_hide(status);
 	return (TRUE);
@@ -83,6 +87,7 @@ gboolean
 phoneuid_notification_service_display_ussd(PhoneuidNotificationService *object,
 		const int mode, const char *message, DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_ussd_show(mode, message);
 	return (TRUE);
@@ -93,6 +98,7 @@ gboolean
 phoneuid_notification_service_display_dialog(PhoneuidNotificationService *object,
 		const int dialog, DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_dialog_show(dialog);
 	return (TRUE);
@@ -102,6 +108,9 @@ gboolean
 phoneuid_notification_service_feedback_action(PhoneuidNotificationService *object,
 		const char *action, const char *level, DBusGMethodInvocation *context)
 {
+	(void) object;
+	(void) action;
+	(void) level;
 	dbus_g_method_return(context);
 	return (TRUE);
 }

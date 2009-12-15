@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-contacts.h"
 #include "phoneuid-contacts-service-glue.h"
@@ -32,7 +34,7 @@ phoneuid_contacts_service_init(PhoneuidContactsService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidContactsServiceClass *klass =
 		PHONEUID_CONTACTS_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -69,6 +71,8 @@ gboolean
 phoneuid_contacts_service_display_list(PhoneuidContactsService *object,
 		GHashTable *filter, DBusGMethodInvocation *context)
 {
+	(void) object;
+	(void) filter;
 	g_debug("org.shr.phoneuid.Contacts.DisplayList");
 	dbus_g_method_return(context);
 	phoneui_contacts_show();
@@ -79,6 +83,7 @@ gboolean
 phoneuid_contacts_service_display_contact(PhoneuidContactsService *object,
 		const char *contact_path, DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.Contacts.DisplayContact");
 	dbus_g_method_return(context);
 	phoneui_contacts_contact_show(contact_path);
@@ -89,6 +94,7 @@ gboolean
 phoneuid_contacts_service_create_contact(PhoneuidContactsService *object,
 		GHashTable *values, DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.Contacts.CreateContact");
 	dbus_g_method_return(context);
 	phoneui_contacts_contact_new(values);
@@ -99,6 +105,7 @@ gboolean
 phoneuid_contacts_service_edit_contact(PhoneuidContactsService *object,
 		const char *contact_path, DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.Contacts.EditContact");
 	dbus_g_method_return(context);
 	phoneui_contacts_contact_edit(contact_path);

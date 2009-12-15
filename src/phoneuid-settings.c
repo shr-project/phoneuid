@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-settings.h"
 #include "phoneuid-settings-service-glue.h"
@@ -32,7 +34,7 @@ phoneuid_settings_service_init(PhoneuidSettingsService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidSettingsServiceClass *klass =
 		PHONEUID_SETTINGS_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -65,6 +67,7 @@ gboolean
 phoneuid_settings_service_display_quick_settings(PhoneuidSettingsService *object,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_quick_settings_show();
 	return (TRUE);

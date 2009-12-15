@@ -34,7 +34,7 @@ phoneuid_idle_screen_service_init(PhoneuidIdleScreenService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidIdleScreenServiceClass *klass =
 		PHONEUID_IDLE_SCREEN_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -67,6 +67,7 @@ gboolean
 phoneuid_idle_screen_service_display(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_idle_screen_show();
 	return (TRUE);
@@ -77,6 +78,7 @@ gboolean
 phoneuid_idle_screen_service_hide(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_idle_screen_hide();
 	return (TRUE);
@@ -87,6 +89,7 @@ gboolean
 phoneuid_idle_screen_service_toggle(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_idle_screen_toggle();
 	return (TRUE);
@@ -97,6 +100,7 @@ gboolean
 phoneuid_idle_screen_service_activate_screensaver(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_utils_device_activate_screensaver();
 	return (TRUE);
@@ -106,6 +110,7 @@ gboolean
 phoneuid_idle_screen_service_deactivate_screensaver(PhoneuidIdleScreenService *object,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	dbus_g_method_return(context);
 	phoneui_utils_device_deactivate_screensaver();
 	return (TRUE);

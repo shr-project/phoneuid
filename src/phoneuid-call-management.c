@@ -3,6 +3,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
+#include <phoneui/phoneui.h>
+
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-call-management.h"
 #include "phoneuid-call-management-service-glue.h"
@@ -33,7 +35,7 @@ phoneuid_call_management_service_init(PhoneuidCallManagementService *object)
 	DBusGProxy *driver_proxy;
 	PhoneuidCallManagementServiceClass *klass =
 		PHONEUID_CALL_MANAGEMENT_SERVICE_GET_CLASS(object);
-	int request_ret;
+	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
@@ -67,6 +69,7 @@ phoneuid_call_management_service_display_incoming(
 		const int status, const char *number,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.CallManagement.DisplayIncoming");
 	dbus_g_method_return(context);
 	phoneui_incoming_call_show(call_id, status, number);
@@ -78,6 +81,7 @@ phoneuid_call_management_service_hide_incoming(
 		PhoneuidCallManagementService *object, const gint call_id,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.CallManagement.HideIncoming");
 	dbus_g_method_return(context);
 	phoneui_incoming_call_hide(call_id);
@@ -91,6 +95,7 @@ phoneuid_call_management_service_display_outgoing(
 		const int status, const char *number,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.CallManagement.DisplayOutgoing");
 	dbus_g_method_return(context);
 	phoneui_outgoing_call_show(call_id, status, number);
@@ -102,6 +107,7 @@ phoneuid_call_management_service_hide_outgoing(
 		PhoneuidCallManagementService *object, const int call_id,
 		DBusGMethodInvocation *context)
 {
+	(void) object;
 	g_debug("org.shr.phoneuid.CallManagement.HideOutgoing");
 	dbus_g_method_return(context);
 	phoneui_outgoing_call_hide(call_id);
