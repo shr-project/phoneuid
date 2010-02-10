@@ -30,29 +30,13 @@ phoneuid_contacts_service_class_init(PhoneuidContactsServiceClass *klass)
 static void
 phoneuid_contacts_service_init(PhoneuidContactsService *object)
 {
-	GError *error = NULL;
-	DBusGProxy *driver_proxy;
 	PhoneuidContactsServiceClass *klass =
 		PHONEUID_CONTACTS_SERVICE_GET_CLASS(object);
-	unsigned int request_ret;
 
 	/* Register DBUS path */
 	dbus_g_connection_register_g_object(klass->connection,
 			PHONEUID_CONTACTS_PATH,
 			G_OBJECT (object));
-
-	/* Register the service name, the constant here are defined in dbus-glib-bindings.h */
-	driver_proxy = dbus_g_proxy_new_for_name (klass->connection,
-			DBUS_SERVICE_DBUS,
-			DBUS_PATH_DBUS,
-			DBUS_INTERFACE_DBUS);
-
-	if (!org_freedesktop_DBus_request_name (driver_proxy,
-			PHONEUID_CONTACTS_NAME, 0, &request_ret, &error)) {
-		g_warning("Unable to register service: %s", error->message);
-		g_error_free (error);
-	}
-	g_object_unref(driver_proxy);
 }
 
 

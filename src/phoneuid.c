@@ -87,14 +87,14 @@ _load_config()
 	char *logpath = NULL;
 	char *debug_level = NULL;
 
-	/* Read the phonefsod preferences */
+	/* Read the phoneuid preferences */
 	keyfile = g_key_file_new();
 	flags = G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS;
 	if (g_key_file_load_from_file
 	    (keyfile, CONF_FILE, flags, &error)) {
 		logpath = g_key_file_get_string(keyfile, "logging",
 					"log_file", NULL);
-		
+
 		debug_level = g_key_file_get_string(keyfile, "logging",
 					"log_level", NULL);
 		/* initialize logging */
@@ -105,15 +105,15 @@ _load_config()
 	debug_level = (debug_level) ? debug_level : DEFAULT_DEBUG_LEVEL;
 	logpath = (logpath) ? logpath : LOGFILE;
 	printf("Log file: %s\nLog level: %s\n", logpath, debug_level);
-	
+
 	logfile = fopen(logpath, "a");
 	if (!logfile) {
 		printf("Error creating the logfile (%s) !!!", logpath);
 		g_log_set_default_handler(g_log_default_handler, NULL);
 	}
-	
+
 	log_flags = G_LOG_FLAG_FATAL;
-	
+
 	if (!strcmp(debug_level, "DEBUG")) {
 		log_flags |= G_LOG_LEVEL_MASK;
 	}
@@ -140,8 +140,8 @@ _load_config()
 	}
 	else {
 	}
-	
-	
+
+
 	if (failed) {
 		g_warning("%s", error->message);
 		g_debug("Reading configuration file error, skipping");
@@ -171,6 +171,25 @@ dbus_register_object(DBusGConnection * connection,
 static void
 phoneuid_dbus_setup()
 {
+	DBusGConnection *bus;
+	DBusGProxy *driver_proxy;
+	GError *error = NULL;
+	unsigned int request_ret;
+
+	/* Register the service name, the constant here are defined in dbus-glib-bindings.h */
+	bus = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
+	driver_proxy = dbus_g_proxy_new_for_name (bus,
+						  DBUS_SERVICE_DBUS,
+						  DBUS_PATH_DBUS,
+						  DBUS_INTERFACE_DBUS);
+
+	if (!org_freedesktop_DBus_request_name (driver_proxy,
+			PHONEUID_SERVICE, 0, &request_ret, &error)) {
+		g_warning("Unable to register service: %s", error->message);
+		g_error_free (error);
+	}
+	g_object_unref(driver_proxy);
+
 	phoneuid_call_management_service_new();
 	phoneuid_dialer_service_new();
 	phoneuid_notification_service_new();
