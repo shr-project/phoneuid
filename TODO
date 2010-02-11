@@ -1,3 +1,5 @@
+* Clean everything after loop ends
+
 phonekit-lib:
 * sends dbus events to ogsmd
 * the dialer application (the one used to place calls) is linked against it
