@@ -1,4 +1,6 @@
 
+#include <string.h>
+#include <stdlib.h>
 #include <glib.h>
 #include <glib-object.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -64,9 +66,9 @@ phoneuid_messages_service_display_message(PhoneuidMessagesService *object,
 		const char *message_path, DBusGMethodInvocation *context)
 {
 	(void) object;
-	(void) message_path;
 	g_debug("org.shr.phoneui.Messages.DisplayMessage");
 	dbus_g_method_return(context);
+	phoneui_messages_message_show(message_path);
 	return (TRUE);
 }
 
@@ -75,9 +77,9 @@ phoneuid_messages_service_create_message(PhoneuidMessagesService *object,
 		GHashTable *values, DBusGMethodInvocation *context)
 {
 	(void) object;
-	(void) values;
-	g_debug("org.shr.phoneui.Messages.CreateContact");
+	g_debug("org.shr.phoneui.Messages.CreateMessage");
 	dbus_g_method_return(context);
+	phoneui_messages_message_new(values);
 	return (TRUE);
 }
 
