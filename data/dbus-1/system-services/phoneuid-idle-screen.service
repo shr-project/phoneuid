@@ -1,4 +1,0 @@
-[D-BUS Service]
-Name=org.shr.phoneui
-Exec=/usr/bin/phoneuid
-User=root
