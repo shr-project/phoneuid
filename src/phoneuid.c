@@ -22,9 +22,10 @@
 #include "phoneuid-dbus-common.h"
 #include "phoneuid-settings.h"
 #include "phoneuid-idle-screen.h"
+#include "phoneuid-phone-log.h"
 
 static FILE *logfile = NULL;
-/*FIXME: hardcoded, shoudl change */
+/*FIXME: hardcoded, should change */
 #define CONF_FILE "/etc/phoneuid.conf"
 #define LOGFILE "/var/log/phoneuid.log"
 #define DEFAULT_DEBUG_LEVEL "INFO"
@@ -197,6 +198,7 @@ phoneuid_dbus_setup()
 	phoneuid_messages_service_new();
 	phoneuid_settings_service_new();
 	phoneuid_idle_screen_service_new();
+	phoneuid_phone_log_service_new();
 }
 
 
@@ -217,7 +219,7 @@ main(int argc, char **argv)
 	phoneuid_dbus_setup();
 	phoneui_loop();
 	g_debug("exited from phoneui_loop!");
-	
+
 	return 0;
 }
 

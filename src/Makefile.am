@@ -21,6 +21,9 @@ phoneuid-settings-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.Settings.xml
 phoneuid-idle-screen-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.IdleScreen.xml
 	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_idle_screen_service $^
 
+phoneuid-phone-log-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.PhoneLog.xml
+	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_phone_log_service $^
+
 
 bin_PROGRAMS = phoneuid
 dbus_sources = phoneuid-contacts-service-glue.h \
@@ -29,7 +32,8 @@ dbus_sources = phoneuid-contacts-service-glue.h \
 	       phoneuid-dialer-service-glue.h \
 	       phoneuid-notification-service-glue.h \
 	       phoneuid-settings-service-glue.h \
-	       phoneuid-idle-screen-service-glue.h
+	       phoneuid-idle-screen-service-glue.h \
+	       phoneuid-phone-log-service-glue.h
 
 
 BUILT_SOURCES = $(dbus_sources)
@@ -49,7 +53,9 @@ phoneuid_SOURCES = $(dbus_sources) \
 	phoneuid-settings.c \
 	phoneuid-settings.h \
 	phoneuid-idle-screen.c \
-	phoneuid-idle-screen.h
+	phoneuid-idle-screen.h \
+	phoneuid-phone-log.c \
+	phoneuid-phone-log.h
 
 phoneuid_CFLAGS = -Wall -Wextra -Werror -Wno-strict-aliasing \
 		  -DDATADIR=\"$(datadir)\" \
