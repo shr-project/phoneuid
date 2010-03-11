@@ -56,7 +56,7 @@ phoneuid_phone_log_service_display_list(PhoneuidPhoneLogService *object,
 	(void) options;
 	dbus_g_method_return(context);
 	// TODO: activate when done in libphone-ui
-// 	phoneui_phone_log_show();
+	phoneui_phone_log_show();
 	return (TRUE);
 }
 
