@@ -27,6 +27,9 @@ gboolean
 phoneuid_settings_service_display_quick_settings(PhoneuidSettingsService *object,
 		DBusGMethodInvocation *context);
 
+gboolean
+phoneuid_settings_service_display_sim_manager(PhoneuidSettingsService *object,
+		DBusGMethodInvocation *context);
 
 PhoneuidSettingsService *phoneuid_settings_service_new(void);
 

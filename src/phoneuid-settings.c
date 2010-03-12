@@ -55,5 +55,15 @@ phoneuid_settings_service_display_quick_settings(PhoneuidSettingsService *object
 	dbus_g_method_return(context);
 	phoneui_quick_settings_show();
 	return (TRUE);
+} 
+
+gboolean
+phoneuid_settings_service_display_sim_manager(PhoneuidSettingsService *object,
+		DBusGMethodInvocation *context)
+{
+	(void) object;
+	dbus_g_method_return(context);
+	phoneui_sim_manager_show();
+	return (TRUE);
 }
 
