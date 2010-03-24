@@ -218,6 +218,8 @@ main(int argc, char **argv)
 	phoneui_init(argc, argv, NULL);
 	phoneuid_dbus_setup();
 	phoneui_loop();
+
+	phoneui_deinit();
 	g_debug("exited from phoneui_loop!");
 
 	return 0;
