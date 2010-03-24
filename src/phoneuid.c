@@ -144,7 +144,7 @@ _load_config()
 
 
 	if (failed) {
-		g_warning("%s", error->message);
+		g_warning("Error reading configuration file: %s", error->message);
 		g_debug("Reading configuration file error, skipping");
 	}
 	else {
