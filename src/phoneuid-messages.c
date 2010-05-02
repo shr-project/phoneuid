@@ -68,7 +68,7 @@ phoneuid_messages_service_display_message(PhoneuidMessagesService *object,
 	(void) object;
 	g_debug("org.shr.phoneui.Messages.DisplayMessage");
 	dbus_g_method_return(context);
-	phoneui_messages_message_show(message_path);
+	phoneui_messages_message_show(strdup(message_path));
 	return (TRUE);
 }
 
