@@ -38,6 +38,7 @@
 #include "phoneuid-settings.h"
 #include "phoneuid-idle-screen.h"
 #include "phoneuid-phone-log.h"
+#include "phoneuid-calendar.h"
 
 static FILE *logfile = NULL;
 /*FIXME: hardcoded, should change */
@@ -214,6 +215,7 @@ phoneuid_dbus_setup()
 	phoneuid_settings_service_new();
 	phoneuid_idle_screen_service_new();
 	phoneuid_phone_log_service_new();
+	phoneuid_calendar_service_new();
 }
 
 

@@ -35,6 +35,7 @@
 #define PHONEUID_PHONE_LOG_INTERFACE         PHONEUID_SERVICE ".PhoneLog"
 #define PHONEUID_IDLE_SCREEN_INTERFACE       PHONEUID_SERVICE ".IdleScreen"
 #define PHONEUID_SETTINGS_INTERFACE          PHONEUID_SERVICE ".Settings"
+#define PHONEUID_CALENDAR_INTERFACE          PHONEUID_SERVICE ".Calendar"
 
 #define PHONEUID_CALL_MANAGEMENT_PATH        PHONEUID_PATH "/CallManagement"
 #define PHONEUID_DIALER_PATH                 PHONEUID_PATH "/Dialer"
@@ -44,5 +45,5 @@
 #define PHONEUID_PHONE_LOG_PATH              PHONEUID_PATH "/PhoneLog"
 #define PHONEUID_IDLE_SCREEN_PATH            PHONEUID_PATH "/IdleScreen"
 #define PHONEUID_SETTINGS_PATH               PHONEUID_PATH "/Settings"
-
+#define PHONEUID_CALENDAR_PATH               PHONEUID_PATH "/Calendar"
 #endif

@@ -24,6 +24,9 @@ phoneuid-idle-screen-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.IdleScreen.xm
 phoneuid-phone-log-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.PhoneLog.xml
 	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_phone_log_service $^
 
+phoneuid-calendar-service-glue.h: $(SPECS_PATH)/org.shr.phoneui.Calendar.xml
+	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=phoneuid_calendar_service $^
+
 
 bin_PROGRAMS = phoneuid
 dbus_sources = phoneuid-contacts-service-glue.h \
@@ -33,7 +36,8 @@ dbus_sources = phoneuid-contacts-service-glue.h \
 	       phoneuid-notification-service-glue.h \
 	       phoneuid-settings-service-glue.h \
 	       phoneuid-idle-screen-service-glue.h \
-	       phoneuid-phone-log-service-glue.h
+	       phoneuid-phone-log-service-glue.h \
+	       phoneuid-calendar-service-glue.h
 
 
 BUILT_SOURCES = $(dbus_sources)
@@ -55,7 +59,9 @@ phoneuid_SOURCES = $(dbus_sources) \
 	phoneuid-idle-screen.c \
 	phoneuid-idle-screen.h \
 	phoneuid-phone-log.c \
-	phoneuid-phone-log.h
+	phoneuid-phone-log.h \
+	phoneuid-calendar.c \
+	phoneuid-calendar.h
 
 phoneuid_CFLAGS = -Wall -Wextra -Werror -Wno-strict-aliasing \
 		  -DDATADIR=\"$(datadir)\" \
