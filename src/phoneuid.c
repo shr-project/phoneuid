@@ -21,23 +21,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib-lowlevel.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-bindings.h>
+#include <gio/gio.h>
 #include <time.h>
 #include <sys/time.h>
-#include <phoneui/phoneui.h>
-
-#include "phoneuid-call-management.h"
-#include "phoneuid-dialer.h"
-#include "phoneuid-notification.h"
-#include "phoneuid-contacts.h"
-#include "phoneuid-messages.h"
-#include "phoneuid-dbus-common.h"
-#include "phoneuid-settings.h"
-#include "phoneuid-idle-screen.h"
-#include "phoneuid-phone-log.h"
+#include <phoneui.h>
+#include "phoneuid-dbus.h"
 
 static FILE *logfile = NULL;
 /*FIXME: hardcoded, should change */
@@ -184,37 +172,7 @@ dbus_register_object(DBusGConnection * connection,
 }
 #endif
 
-static void
-phoneuid_dbus_setup()
-{
-	DBusGConnection *bus;
-	DBusGProxy *driver_proxy;
-	GError *error = NULL;
-	unsigned int request_ret;
 
-	/* Register the service name, the constant here are defined in dbus-glib-bindings.h */
-	bus = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
-	driver_proxy = dbus_g_proxy_new_for_name (bus,
-						  DBUS_SERVICE_DBUS,
-						  DBUS_PATH_DBUS,
-						  DBUS_INTERFACE_DBUS);
-
-	if (!org_freedesktop_DBus_request_name (driver_proxy,
-			PHONEUID_SERVICE, 0, &request_ret, &error)) {
-		g_warning("Unable to register service: %s", error->message);
-		g_error_free (error);
-	}
-	g_object_unref(driver_proxy);
-
-	phoneuid_call_management_service_new();
-	phoneuid_dialer_service_new();
-	phoneuid_notification_service_new();
-	phoneuid_contacts_service_new();
-	phoneuid_messages_service_new();
-	phoneuid_settings_service_new();
-	phoneuid_idle_screen_service_new();
-	phoneuid_phone_log_service_new();
-}
 
 
 int
@@ -227,7 +185,6 @@ main(int argc, char **argv)
 
 	if (!g_thread_supported())
 		g_thread_init(NULL);
-	dbus_g_thread_init();
 
 	phoneui_load("phoneuid");
 	phoneui_init(argc, argv, NULL);
