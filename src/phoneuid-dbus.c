@@ -8,6 +8,7 @@
 #include "phoneuid-dbus-common.h"
 
 
+GDBusConnection *system_bus;
 static guint phoneuid_owner_id;
 
 /* g_bus_own_name callbacks */
@@ -53,11 +54,19 @@ static gboolean _settings_display_sim_manager(PhoneuiSettings *object, GDBusMeth
 void
 phoneuid_dbus_setup()
 {
+	GError *error = NULL;
 
-	phoneuid_owner_id = g_bus_own_name
-	(G_BUS_TYPE_SYSTEM, PHONEUID_SERVICE,
+	system_bus = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
+	if (error) {
+		g_error("%d: %s", error->code, error->message);
+		g_error_free(error);
+		return;
+	}
+
+	phoneuid_owner_id = g_bus_own_name_on_connection
+	(system_bus, PHONEUID_SERVICE,
 	 G_BUS_NAME_OWNER_FLAGS_REPLACE | G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT,
-	 _on_bus_acquired, _on_name_acquired, _on_name_lost, NULL, NULL );
+	 _on_bus_acquired, _on_name_acquired, _on_name_lost, NULL);
 
 /*	phoneuid_watcher_id = g_bus_watch_name
 	(G_BUS_TYPE_SYSTEM, PHONEUID_SERVICE,
