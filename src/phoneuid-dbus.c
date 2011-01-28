@@ -2,6 +2,7 @@
 #include <gio/gio.h>
 #include <shr-bindings.h>
 #include <phoneui.h>
+#include <phoneui-utils.h>
 #include <phoneui-utils-device.h>
 
 #include "phoneuid-dbus.h"
@@ -49,7 +50,8 @@ static gboolean _phonelog_display_list(PhoneuiPhoneLog *object, GDBusMethodInvoc
 
 static gboolean _settings_display_quick_settings(PhoneuiSettings *object, GDBusMethodInvocation *invocation, gpointer data);
 static gboolean _settings_display_sim_manager(PhoneuiSettings *object, GDBusMethodInvocation *invocation, gpointer data);
-
+static gboolean _settings_set_message_receipt(PhoneuiSettings* object, GDBusMethodInvocation* invocation, gboolean message_receipt, gpointer data);
+static gboolean _settings_get_message_receipt(PhoneuiSettings *object, GDBusMethodInvocation *invocation, gpointer data);
 
 void
 phoneuid_dbus_setup()
@@ -149,6 +151,8 @@ _on_bus_acquired (GDBusConnection *connection,
 	PhoneuiSettings *settings = phoneui_settings_stub_new();
 	g_signal_connect(settings, "handle-display-quick-settings", G_CALLBACK(_settings_display_quick_settings), NULL);
 	g_signal_connect(settings, "handle-display-sim-manager", G_CALLBACK(_settings_display_sim_manager), NULL);
+	g_signal_connect(settings, "handle-set-message-receipt", G_CALLBACK(_settings_set_message_receipt), NULL);
+	g_signal_connect(settings, "handle-get-message-receipt", G_CALLBACK(_settings_get_message_receipt), NULL);
 	_register_interface(G_DBUS_INTERFACE(settings), connection, PHONEUID_SETTINGS_PATH);
 }
 
@@ -413,8 +417,8 @@ _messages_display_list(PhoneuiMessages* object,
 {
 	(void) data;
 	(void) options;
-	phoneui_messages_show();
 	phoneui_messages_complete_display_list(object, invocation);
+	phoneui_messages_show();
 	return TRUE;
 }
 
@@ -474,5 +478,28 @@ _settings_display_sim_manager(PhoneuiSettings* object,
 	(void) data;
 	phoneui_sim_manager_show();
 	phoneui_settings_complete_display_sim_manager(object, invocation);
+	return TRUE;
+}
+
+gboolean 
+_settings_set_message_receipt(PhoneuiSettings* object, 
+				  GDBusMethodInvocation* invocation, 
+				  gboolean message_receipt, gpointer data)
+{
+	(void) data;
+	phoneui_utils_set_message_receipt(message_receipt);
+	phoneui_settings_complete_set_message_receipt(object, invocation);
+	return TRUE;
+}
+
+gboolean 
+_settings_get_message_receipt(PhoneuiSettings* object, 
+				  GDBusMethodInvocation* invocation, gpointer data)
+{
+	(void) data;
+	gboolean message_receipt;
+	message_receipt = phoneui_utils_get_message_receipt();
+	phoneui_settings_complete_get_message_receipt(object, invocation, 
+							    message_receipt);
 	return TRUE;
 }
