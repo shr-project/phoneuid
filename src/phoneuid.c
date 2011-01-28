@@ -146,6 +146,7 @@ _load_config()
 	}
 
 
+
 	if (failed) {
 		g_warning("Error reading configuration file: %s", error->message);
 		g_debug("Reading configuration file error, skipping");
@@ -155,24 +156,6 @@ _load_config()
 		g_message("Using log level '%s'", debug_level);
 	}
 }
-
-/* not used atm */
-#if 0
-static gpointer
-dbus_register_object(DBusGConnection * connection,
-		     DBusGProxy * proxy,
-		     GType object_type,
-		     const DBusGObjectInfo * info, const gchar * path)
-{
-	(void) proxy;
-	GObject *object = g_object_new(object_type, NULL);
-	dbus_g_object_type_install_info(object_type, info);
-	dbus_g_connection_register_g_object(connection, path, object);
-	return object;
-}
-#endif
-
-
 
 
 int
