@@ -166,9 +166,6 @@ main(int argc, char **argv)
 	_load_config();
 	g_type_init();
 
-	if (!g_thread_supported())
-		g_thread_init(NULL);
-
 	phoneui_load("phoneuid");
 	phoneui_init(argc, argv, NULL);
 	phoneuid_dbus_setup();
