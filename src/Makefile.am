@@ -20,7 +20,7 @@ phoneuid_CFLAGS = -Wall -Wextra -Werror -Wno-strict-aliasing \
 		  @LIBPHONEUI_CFLAGS@ \
 		  -ggdb
 
-phoneuid_LDFLAGS = \
+phoneuid_LDADD = \
 		   -ldl \
 		   @GLIB_LIBS@ \
 		   @LIBPHONEUI_LIBS@
