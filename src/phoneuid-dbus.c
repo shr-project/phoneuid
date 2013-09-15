@@ -9,11 +9,7 @@
 #include "phoneuid-dbus-common.h"
 
 
-GDBusConnection *system_bus;
-static guint phoneuid_owner_id;
-
 /* g_bus_own_name callbacks */
-static void _on_bus_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data);
 static void _on_name_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data);
 static void _on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user_data);
 
@@ -54,21 +50,91 @@ static gboolean _settings_set_message_receipt(PhoneuiSettings* object, GDBusMeth
 static gboolean _settings_get_message_receipt(PhoneuiSettings *object, GDBusMethodInvocation *invocation, gpointer data);
 
 void
+_register_interface(GDBusInterfaceSkeleton *iface,
+                      GDBusConnection *connection,
+                      const char *path)
+{
+        GError *error = NULL;
+
+        g_dbus_interface_skeleton_export(iface, connection, path, &error);
+        if (error) {
+                g_critical("Failed to register %s: %s", path, error->message);
+                g_error_free(error);
+        }
+}
+
+void
+_on_bus_acquired (GDBusConnection *connection)
+{
+        PhoneuiCallManagement *call_management = phoneui_call_management_skeleton_new();
+        g_signal_connect(call_management, "handle-display-incoming", G_CALLBACK(_call_management_display_incoming), NULL);
+        g_signal_connect(call_management, "handle-hide-incoming", G_CALLBACK(_call_management_hide_incoming), NULL);
+        g_signal_connect(call_management, "handle-display-outgoing", G_CALLBACK(_call_management_display_outgoing), NULL);
+        g_signal_connect(call_management, "handle-hide-outgoing", G_CALLBACK(_call_management_hide_outgoing), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(call_management), connection, PHONEUID_CALL_MANAGEMENT_PATH);
+
+        PhoneuiContacts *contacts = phoneui_contacts_skeleton_new();
+        g_signal_connect(contacts, "handle-display-list", G_CALLBACK(_contacts_display_list), NULL);
+        g_signal_connect(contacts, "handle-display-contact", G_CALLBACK(_contacts_display_contact), NULL);
+        g_signal_connect(contacts, "handle-create-contact", G_CALLBACK(_contacts_create_contact), NULL);
+        g_signal_connect(contacts, "handle-edit-contact", G_CALLBACK(_contacts_edit_contact), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(contacts), connection, PHONEUID_CONTACTS_PATH);
+
+        PhoneuiDialer *dialer = phoneui_dialer_skeleton_new();
+        g_signal_connect(dialer, "handle-display", G_CALLBACK(_dialer_display), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(dialer), connection, PHONEUID_DIALER_PATH);
+
+        PhoneuiIdleScreen *idle = phoneui_idle_screen_skeleton_new();
+        g_signal_connect(idle, "handle-display", G_CALLBACK(_idle_screen_display), NULL);
+        g_signal_connect(idle, "handle-hide", G_CALLBACK(_idle_screen_hide), NULL);
+        g_signal_connect(idle, "handle-toggle", G_CALLBACK(_idle_screen_toggle), NULL);
+        g_signal_connect(idle, "handle-activate-screensaver", G_CALLBACK(_idle_screen_activate_screensaver), NULL);
+        g_signal_connect(idle, "handle-deactivate-screensaver", G_CALLBACK(_idle_screen_deactivate_screensaver), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(idle), connection, PHONEUID_IDLE_SCREEN_PATH);
+
+        PhoneuiMessages *messages = phoneui_messages_skeleton_new();
+        g_signal_connect(messages, "handle-display-list", G_CALLBACK(_messages_display_list), NULL);
+        g_signal_connect(messages, "handle-display-message", G_CALLBACK(_messages_display_message), NULL);
+        g_signal_connect(messages, "handle-create-message", G_CALLBACK(_messages_create_message), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(messages), connection, PHONEUID_MESSAGES_PATH);
+
+        PhoneuiNotification *notification = phoneui_notification_skeleton_new();
+        g_signal_connect(notification, "handle-display-sim-auth", G_CALLBACK(_notification_display_sim_auth), NULL);
+        g_signal_connect(notification, "handle-hide-sim-auth", G_CALLBACK(_notification_hide_sim_auth), NULL);
+        g_signal_connect(notification, "handle-display-dialog", G_CALLBACK(_notification_display_dialog), NULL);
+        g_signal_connect(notification, "handle-display-ussd", G_CALLBACK(_notification_display_ussd), NULL);
+        g_signal_connect(notification, "handle-feedback-action", G_CALLBACK(_notification_feedback_action), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(notification), connection, PHONEUID_NOTIFICATION_PATH);
+
+        PhoneuiPhoneLog *phonelog = phoneui_phone_log_skeleton_new();
+        g_signal_connect(phonelog, "handle-display-list", G_CALLBACK(_phonelog_display_list), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(phonelog), connection, PHONEUID_PHONE_LOG_PATH);
+
+        PhoneuiSettings *settings = phoneui_settings_skeleton_new();
+        g_signal_connect(settings, "handle-display-quick-settings", G_CALLBACK(_settings_display_quick_settings), NULL);
+        g_signal_connect(settings, "handle-display-sim-manager", G_CALLBACK(_settings_display_sim_manager), NULL);
+        g_signal_connect(settings, "handle-set-message-receipt", G_CALLBACK(_settings_set_message_receipt), NULL);
+        g_signal_connect(settings, "handle-get-message-receipt", G_CALLBACK(_settings_get_message_receipt), NULL);
+        _register_interface(G_DBUS_INTERFACE_SKELETON(settings), connection, PHONEUID_SETTINGS_PATH);
+}
+
+void
 phoneuid_dbus_setup()
 {
 	GError *error = NULL;
 
-	system_bus = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
+	GDBusConnection* system_bus = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
 	if (error) {
 		g_error("%d: %s", error->code, error->message);
 		g_error_free(error);
 		return;
 	}
 
-	phoneuid_owner_id = g_bus_own_name_on_connection
-	(system_bus, PHONEUID_SERVICE,
-	 G_BUS_NAME_OWNER_FLAGS_REPLACE | G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT,
-	 _on_bus_acquired, _on_name_acquired, _on_name_lost, NULL);
+	_on_bus_acquired(system_bus);
+
+	g_bus_own_name_on_connection(system_bus, PHONEUID_SERVICE,
+				     G_BUS_NAME_OWNER_FLAGS_REPLACE | G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT,
+				     _on_name_acquired, _on_name_lost, NULL, NULL);
 
 /*	phoneuid_watcher_id = g_bus_watch_name
 	(G_BUS_TYPE_SYSTEM, PHONEUID_SERVICE,
@@ -78,82 +144,7 @@ phoneuid_dbus_setup()
 }
 
 
-
 /* handlers for g_bus_own_name */
-
-static void
-_register_interface(GDBusInterfaceSkeleton *iface,
-		      GDBusConnection *connection,
-		      const char *path)
-{
-	GError *error = NULL;
-
-	g_dbus_interface_skeleton_export(iface, connection, path, &error);
-	if (error) {
-		g_critical("Failed to register %s: %s", path, error->message);
-		g_error_free(error);
-	}
-}
-
-static void
-_on_bus_acquired (GDBusConnection *connection,
-		    const gchar     *name,
-		    gpointer         user_data)
-{
-	(void) user_data;
-	(void) name;
-
-	PhoneuiCallManagement *call_management = phoneui_call_management_skeleton_new();
-	g_signal_connect(call_management, "handle-display-incoming", G_CALLBACK(_call_management_display_incoming), NULL);
-	g_signal_connect(call_management, "handle-hide-incoming", G_CALLBACK(_call_management_hide_incoming), NULL);
-	g_signal_connect(call_management, "handle-display-outgoing", G_CALLBACK(_call_management_display_outgoing), NULL);
-	g_signal_connect(call_management, "handle-hide-outgoing", G_CALLBACK(_call_management_hide_outgoing), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(call_management), connection, PHONEUID_CALL_MANAGEMENT_PATH);
-
-	PhoneuiContacts *contacts = phoneui_contacts_skeleton_new();
-	g_signal_connect(contacts, "handle-display-list", G_CALLBACK(_contacts_display_list), NULL);
-	g_signal_connect(contacts, "handle-display-contact", G_CALLBACK(_contacts_display_contact), NULL);
-	g_signal_connect(contacts, "handle-create-contact", G_CALLBACK(_contacts_create_contact), NULL);
-	g_signal_connect(contacts, "handle-edit-contact", G_CALLBACK(_contacts_edit_contact), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(contacts), connection, PHONEUID_CONTACTS_PATH);
-
-	PhoneuiDialer *dialer = phoneui_dialer_skeleton_new();
-	g_signal_connect(dialer, "handle-display", G_CALLBACK(_dialer_display), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(dialer), connection, PHONEUID_DIALER_PATH);
-
-	PhoneuiIdleScreen *idle = phoneui_idle_screen_skeleton_new();
-	g_signal_connect(idle, "handle-display", G_CALLBACK(_idle_screen_display), NULL);
-	g_signal_connect(idle, "handle-hide", G_CALLBACK(_idle_screen_hide), NULL);
-	g_signal_connect(idle, "handle-toggle", G_CALLBACK(_idle_screen_toggle), NULL);
-	g_signal_connect(idle, "handle-activate-screensaver", G_CALLBACK(_idle_screen_activate_screensaver), NULL);
-	g_signal_connect(idle, "handle-deactivate-screensaver", G_CALLBACK(_idle_screen_deactivate_screensaver), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(idle), connection, PHONEUID_IDLE_SCREEN_PATH);
-
-	PhoneuiMessages *messages = phoneui_messages_skeleton_new();
-	g_signal_connect(messages, "handle-display-list", G_CALLBACK(_messages_display_list), NULL);
-	g_signal_connect(messages, "handle-display-message", G_CALLBACK(_messages_display_message), NULL);
-	g_signal_connect(messages, "handle-create-message", G_CALLBACK(_messages_create_message), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(messages), connection, PHONEUID_MESSAGES_PATH);
-
-	PhoneuiNotification *notification = phoneui_notification_skeleton_new();
-	g_signal_connect(notification, "handle-display-sim-auth", G_CALLBACK(_notification_display_sim_auth), NULL);
-	g_signal_connect(notification, "handle-hide-sim-auth", G_CALLBACK(_notification_hide_sim_auth), NULL);
-	g_signal_connect(notification, "handle-display-dialog", G_CALLBACK(_notification_display_dialog), NULL);
-	g_signal_connect(notification, "handle-display-ussd", G_CALLBACK(_notification_display_ussd), NULL);
-	g_signal_connect(notification, "handle-feedback-action", G_CALLBACK(_notification_feedback_action), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(notification), connection, PHONEUID_NOTIFICATION_PATH);
-
-	PhoneuiPhoneLog *phonelog = phoneui_phone_log_skeleton_new();
-	g_signal_connect(phonelog, "handle-display-list", G_CALLBACK(_phonelog_display_list), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(phonelog), connection, PHONEUID_PHONE_LOG_PATH);
-
-	PhoneuiSettings *settings = phoneui_settings_skeleton_new();
-	g_signal_connect(settings, "handle-display-quick-settings", G_CALLBACK(_settings_display_quick_settings), NULL);
-	g_signal_connect(settings, "handle-display-sim-manager", G_CALLBACK(_settings_display_sim_manager), NULL);
-	g_signal_connect(settings, "handle-set-message-receipt", G_CALLBACK(_settings_set_message_receipt), NULL);
-	g_signal_connect(settings, "handle-get-message-receipt", G_CALLBACK(_settings_get_message_receipt), NULL);
-	_register_interface(G_DBUS_INTERFACE_SKELETON(settings), connection, PHONEUID_SETTINGS_PATH);
-}
 
 static void
 _on_name_acquired (GDBusConnection *connection,
